@@ -1,6 +1,9 @@
 package com.ijse.springintro.service;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -21,6 +24,7 @@ import com.ijse.springintro.entity.Category;
 import com.ijse.springintro.entity.Product;
 import com.ijse.springintro.repository.ProductRepository;
 
+
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
     
@@ -37,9 +41,7 @@ public class ProductServiceTest {
         product.setName("Saban");
         product.setPrice(1000.0);
         product.setDescription("50g saban");
-        Category category = new Category();
-        category.setId(1L);
-        category.setName("Washing items");
+        Category category = Category.builder().id(1L).name("Washing items").build();
         product.setCategory(category);
         Mockito.when(productRepository.save(product)).thenReturn(product);
         Product addedProduct = productService.createProduct(product);
@@ -60,9 +62,7 @@ public class ProductServiceTest {
         sampleProduct.setId(1L);
         sampleProduct.setName("atlas book");
         sampleProduct.setDescription("80 pages book");
-        Category category = new Category();
-        category.setId(1L);
-        category.setName("Books");
+        Category category = Category.builder().id(1L).name("Books").build();
         sampleProduct.setCategory(category);
         MockitoAnnotations.openMocks(this);
     }
@@ -109,9 +109,7 @@ public class ProductServiceTest {
 
         existingProduct.setId(1L);
         existingProduct.setName("Polo shirt");
-        Category category = new Category();
-        category.setId(1L);
-        category.setName("Clothes");
+        Category category = Category.builder().id(1L).name("Clothes").build();
         existingProduct.setCategory(category);
         existingProduct.setDescription("Polo 16 shirt");
         existingProduct.setPrice(5000.0);
@@ -131,6 +129,23 @@ public class ProductServiceTest {
         Assertions.assertTrue(updatedProduct.getName()=="Denim shirt");
         Assertions.assertTrue(result.getName()=="Denim shirt");        
         Assertions.assertTrue(result.getPrice()==6000.0);
+    }
+
+    @Test
+    void deleteProductShouldDeleteProduct() {
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Ice cream");
+        product.setDescription("Ice cream 1L");
+        product.setPrice(500.0);
+        Category category = Category.builder().id(1L).name("Food").build();
+        product.setCategory(category);
+
+        doNothing().when(productRepository).deleteById(product.getId());
+
+        productService.deleteProduct(product.getId());
+
     }
 
 }
