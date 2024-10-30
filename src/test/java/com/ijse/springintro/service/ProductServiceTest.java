@@ -2,6 +2,7 @@ package com.ijse.springintro.service;
 
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 import java.util.Optional;
 
 import com.ijse.springintro.entity.Category;
@@ -59,6 +63,7 @@ public class ProductServiceTest {
         category.setId(1L);
         category.setName("Books");
         sampleProduct.setCategory(category);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -69,6 +74,31 @@ public class ProductServiceTest {
         Assertions.assertTrue(result.getDescription()=="80 pages book");
         Assertions.assertTrue(result.getName()=="atlas book");
         Assertions.assertTrue(result.getCategory().getId()==1L);
+    }
+
+    @Test
+    void getAllProductsShouldGetAllProducts() {
+
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setName("Banana");
+        product1.setDescription("Banana 1kg");
+        
+        Product product2 = new Product();
+        product2.setId(2L);
+        product2.setName("iPhone");
+        product2.setDescription("iPhone 12");
+
+        List<Product> mockProducts = Arrays.asList(product1,product2);
+
+        when(productRepository.findAll()).thenReturn(mockProducts);
+
+        List<Product> results = productService.getAllProducts();
+
+        Assertions.assertEquals("iPhone", results.get(1).getName());
+        Assertions.assertEquals("iPhone 12", results.get(1).getDescription());
+        Assertions.assertEquals("Banana", results.get(0).getName());
+        Assertions.assertEquals("Banana 1kg", results.get(0).getDescription());
     }
 
 }
