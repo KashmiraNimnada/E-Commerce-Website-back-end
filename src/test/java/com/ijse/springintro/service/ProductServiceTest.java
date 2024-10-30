@@ -1,5 +1,6 @@
 package com.ijse.springintro.service;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -99,6 +100,37 @@ public class ProductServiceTest {
         Assertions.assertEquals("iPhone 12", results.get(1).getDescription());
         Assertions.assertEquals("Banana", results.get(0).getName());
         Assertions.assertEquals("Banana 1kg", results.get(0).getDescription());
+    }
+
+    @Test
+    void updateProductShouldUpdateProduct() {
+
+        Product existingProduct = new Product();
+
+        existingProduct.setId(1L);
+        existingProduct.setName("Polo shirt");
+        Category category = new Category();
+        category.setId(1L);
+        category.setName("Clothes");
+        existingProduct.setCategory(category);
+        existingProduct.setDescription("Polo 16 shirt");
+        existingProduct.setPrice(5000.0);
+
+        Product updatedProduct = new Product();
+        
+        updatedProduct.setName("Denim shirt");
+        updatedProduct.setDescription("Denim 16 shirt");
+        updatedProduct.setPrice(6000.0);
+        updatedProduct.setCategory(category);
+
+        when(productRepository.findById(existingProduct.getId())).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
+
+        Product result = productService.updateProduct(existingProduct.getId(),updatedProduct);
+
+        Assertions.assertTrue(updatedProduct.getName()=="Denim shirt");
+        Assertions.assertTrue(result.getName()=="Denim shirt");        
+        Assertions.assertTrue(result.getPrice()==6000.0);
     }
 
 }

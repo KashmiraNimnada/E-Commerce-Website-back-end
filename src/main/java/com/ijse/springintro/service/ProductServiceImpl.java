@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product updateProduct(Long id,Product product){
-        Product getProduct = getProductById(id);
+        Product getProduct = productRepository.findById(id).orElse(null);
         if(getProduct==null){
             return null;
         }else{
