@@ -142,6 +142,8 @@ public class ProductServiceTest {
         Category category = Category.builder().id(1L).name("Food").build();
         product.setCategory(category);
 
+        when(productRepository.save(product)).thenReturn(product);
+        productRepository.save(product);
         doNothing().when(productRepository).deleteById(product.getId());
 
         productService.deleteProduct(product.getId());
