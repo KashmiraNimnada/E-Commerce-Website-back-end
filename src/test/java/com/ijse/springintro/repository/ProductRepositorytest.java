@@ -22,7 +22,7 @@ public class ProductRepositorytest {
     ProductRepository productRepository;
 
     @Test
-    void createProductShouldCreateProduct() {
+    void saveShouldSave() {
 
         Product product = new Product();
         product.setId(1L);
@@ -39,7 +39,7 @@ public class ProductRepositorytest {
     }
 
     @Test
-    void getProductByIdShouldGetProductById() {
+    void findByIdShouldfindById() {
 
         Product product = new Product();
         product.setId(1L);
@@ -54,7 +54,7 @@ public class ProductRepositorytest {
     }
 
     @Test
-    void getAllProductsShouldGetAllProducts() {
+    void findAllShouldFindAll() {
 
         Product product1 = new Product();
         product1.setId(1L);
@@ -75,7 +75,7 @@ public class ProductRepositorytest {
     }
 
     @Test
-    void deleteProductShouldDeleteProduct() {
+    void deleteByIdShouldDeleteById() {
 
         Product product = new Product();
         product.setId(1L);
